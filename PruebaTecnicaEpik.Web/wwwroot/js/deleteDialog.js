@@ -1,4 +1,4 @@
-﻿(function (soccerDeleteDialog) {
+﻿(function (personaDeleteDialog) {
 
     var methods = {
         "openModal": openModal,
@@ -32,6 +32,6 @@
         });
     }
 
-    soccerDeleteDialog.sc_deleteDialog = methods;
+    personaDeleteDialog.sc_deleteDialog = methods;
 
 })(window);
