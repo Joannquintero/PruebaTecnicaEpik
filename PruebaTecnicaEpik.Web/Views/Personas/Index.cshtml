@@ -1,0 +1,124 @@
+﻿@model IEnumerable<PruebaTecnicaEpik.Web.Models.PersonaViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nueva Persona</a>
+</p>
+<div class="row">
+    <div class="col-md-3">
+        <label class="control-label"><strong>Género</strong></label>
+        <select id="generos" asp-items="@(new SelectList(@ViewBag.Generos, "Id", "Descripcion"))" class="form-control" aria-label="Default select example" data-val="true">
+            <option value="0">Seleccione</option>
+        </select>
+        <br />
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Personas</h3>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th style="width:20%">
+                                @Html.DisplayNameFor(model => model.Identificacion)
+                            </th>
+                            <th style="width:20%">
+                                @Html.DisplayNameFor(model => model.Nombres)
+                            </th>
+                            <th style="width:20%">
+                                @Html.DisplayNameFor(model => model.Apellidos)
+                            </th>
+                            <th style="width:10%">
+                                @Html.DisplayNameFor(model => model.Edad)
+                            </th>
+                            <th style="width:10%">
+                                @Html.DisplayNameFor(model => model.Genero.Descripcion)
+                            </th>
+                            <th style="width:20%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Identificacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nombres)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Apellidos)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Edad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Genero.Descripcion)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Identificacion" class="btn btn-warning">Editar</a>
+                                    <button data-id="@item.Identificacion" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/deleteDialog.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable({
+                searching: false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                "aLengthMenu": [
+                    [25, 50, 100, 200, -1],
+                    [25, 50, 100, 200, "Todos"]
+                ]
+            });
+
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Personas/Delete/', false);
+        });
+
+        $("#generos").change(function () {
+            var id = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "/Personas/FiltrarGenero/" + id,
+                success: function (response) {
+                    $("#MyTable td").parent().remove();
+                    $.each(response, function (index, value) {
+                        $('#MyTable > tbody:last').append('<tr><td>' + value.identificacion + '</td><td>' + value.nombres + '</td><td>' + value.apellidos + '</td><td>' + value.edad + '</td><td>' + value.genero.descripcion + '</td><td> <a asp-action="Edit" asp-route-id="' + value.identificacion + '" class="btn btn-warning">Editar</a> <button data-id="' + value.identificacion + '" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button> </td></tr>');
+                    });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    </script>
+}
