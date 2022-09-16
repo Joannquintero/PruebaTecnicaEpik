@@ -109,7 +109,7 @@
                 success: function (response) {
                     $("#MyTable td").parent().remove();
                     $.each(response, function (index, value) {
-                        $('#MyTable > tbody:last').append('<tr><td>' + value.identificacion + '</td><td>' + value.nombres + '</td><td>' + value.apellidos + '</td><td>' + value.edad + '</td><td>' + value.genero.descripcion + '</td><td> <a asp-action="Edit" asp-route-id="' + value.identificacion + '" class="btn btn-warning">Editar</a> <button data-id="' + value.identificacion + '" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button> </td></tr>');
+                        $('#MyTable > tbody:last').append('<tr><td>' + value.identificacion + '</td><td>' + value.nombres + '</td><td>' + value.apellidos + '</td><td>' + value.edad + '</td><td>' + value.genero.descripcion + '</td><td> <a href="/Personas/Edit/' + value.identificacion + '" class="btn btn-warning">Editar</a> <button data-id="' + value.identificacion + '" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button> </td></tr>');
                     });
                 },
                 failure: function (response) {

@@ -26,8 +26,8 @@ namespace PruebaTecnicaEpik.Api
             IServiceScopeFactory scopeFactory = host.Services.GetService<IServiceScopeFactory>();
             using (IServiceScope scope = scopeFactory.CreateScope())
             {
-                //SeedData seeder = scope.ServiceProvider.GetService<SeedData>();
-                //seeder.SeedAsync().Wait();
+                SeedData seeder = scope.ServiceProvider.GetService<SeedData>();
+                seeder.SeedAsync().Wait();
             }
         }
 

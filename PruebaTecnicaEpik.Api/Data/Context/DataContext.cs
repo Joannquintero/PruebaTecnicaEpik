@@ -13,6 +13,7 @@ namespace PruebaTecnicaEpik.Api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Persona>().HasIndex(x => x.Identificacion).IsUnique();
         }
     }
 }

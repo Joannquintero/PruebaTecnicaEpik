@@ -2,7 +2,7 @@
 
 namespace PruebaTecnicaEpik.Api.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace PruebaTecnicaEpik.Api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Descripcion = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,8 +26,8 @@ namespace PruebaTecnicaEpik.Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Identificacion = table.Column<long>(type: "bigint", nullable: false),
-                    Nombres = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nombres = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Apellidos = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Edad = table.Column<int>(type: "int", nullable: false),
                     GeneroId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -46,6 +46,12 @@ namespace PruebaTecnicaEpik.Api.Migrations
                 name: "IX_Personas_GeneroId",
                 table: "Personas",
                 column: "GeneroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personas_Identificacion",
+                table: "Personas",
+                column: "Identificacion",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

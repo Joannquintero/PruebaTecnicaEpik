@@ -19,7 +19,7 @@ namespace PruebaTecnicaEpik.Api.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PruebaTecnicaEpik.Api.Data.Entities.Genero", b =>
+            modelBuilder.Entity("PruebaTecnicaEpik.Models.Entities.Genero", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,14 +27,16 @@ namespace PruebaTecnicaEpik.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Generos");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaEpik.Api.Data.Entities.Persona", b =>
+            modelBuilder.Entity("PruebaTecnicaEpik.Models.Entities.Persona", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +44,9 @@ namespace PruebaTecnicaEpik.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Apellidos")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("Edad")
                         .HasColumnType("int");
@@ -54,25 +58,30 @@ namespace PruebaTecnicaEpik.Api.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Nombres")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GeneroId");
 
+                    b.HasIndex("Identificacion")
+                        .IsUnique();
+
                     b.ToTable("Personas");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaEpik.Api.Data.Entities.Persona", b =>
+            modelBuilder.Entity("PruebaTecnicaEpik.Models.Entities.Persona", b =>
                 {
-                    b.HasOne("PruebaTecnicaEpik.Api.Data.Entities.Genero", "Genero")
+                    b.HasOne("PruebaTecnicaEpik.Models.Entities.Genero", "Genero")
                         .WithMany("Personas")
                         .HasForeignKey("GeneroId");
 
                     b.Navigation("Genero");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaEpik.Api.Data.Entities.Genero", b =>
+            modelBuilder.Entity("PruebaTecnicaEpik.Models.Entities.Genero", b =>
                 {
                     b.Navigation("Personas");
                 });
